@@ -46,6 +46,9 @@ test('Navigate to page, Log In, Add Items, Checkout', async ({page}) => {
     await page.click('[data-test="finish"]');
     await expect (page).toHaveURL(/checkout-complete.html/);
 
+    //Screenshot to verify Test Results
+    await page.screenshot({ path: 'screenshots/order-completion-page.png' });
+
 
 });
 
