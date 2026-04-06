@@ -18,6 +18,14 @@ test('Navigate to page, Log In, Add Items, Checkout', async ({page}) => {
     await page.waitForLoadState();
     expect(response?.status()).toBe(200);
 
+    //Adjust filter
+    const store_cart_dropdown = page.locator('[data-test="product-sort-container"]');
+    store_cart_dropdown.selectOption("Price (low to high)");
+
+    //Verify store filter was changed to Low to High
+    await page.screenshot({ path: 'screenshots/store-filter.png' });
+
+
     //Add items to cart
     await page.click('[data-test="add-to-cart-sauce-labs-backpack"]');
     await page.click('[data-test="add-to-cart-sauce-labs-bike-light"]');
