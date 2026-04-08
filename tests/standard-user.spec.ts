@@ -1,30 +1,22 @@
 import {test , expect } from '@playwright/test';
+import { LoginPage } from '../pages/loginPage';
 
 test.describe('Standard User can add items and complete checkout', () => {
 
 test.beforeEach(async ({page}) => {
-    await page.goto('https://www.saucedemo.com/');
+    const loginPage = new LoginPage(page);
+
+    await loginPage.goto();
+    await loginPage.login('standard_user', 'secret_sauce');
 });
 
 test('Navigate to page, Log In, Add Items, Checkout', async ({page}) => {
 
-    //Navigate to site and login
-    const response = await page.goto('https://www.saucedemo.com/');
-    await page.fill('[data-test="username"]' , 'standard_user');
-    await page.fill('[data-test="password"]' , 'secret_sauce');
-    await page.click('[data-test="login-button"]');
+    //Verifying Page status
+    await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
 
     //Wait for page to fully load and verify response
     await page.waitForLoadState();
-    expect(response?.status()).toBe(200);
-
-    //Adjust filter
-    const store_cart_dropdown = page.locator('[data-test="product-sort-container"]');
-    store_cart_dropdown.selectOption("Price (low to high)");
-
-    //Verify store filter was changed to Low to High
-    await page.screenshot({ path: 'screenshots/store-filter.png' });
-
 
     //Add items to cart
     await page.click('[data-test="add-to-cart-sauce-labs-backpack"]');
