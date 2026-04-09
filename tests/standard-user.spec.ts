@@ -1,5 +1,6 @@
 import {test , expect } from '@playwright/test';
 import { LoginPage } from '../pages/loginPage';
+import { InventoryPage } from '../pages/inventoryPage';
 
 test.describe('Standard User can add items and complete checkout', () => {
 
@@ -12,21 +13,23 @@ test.beforeEach(async ({page}) => {
 
 test('Navigate to page, Log In, Add Items, Checkout', async ({page}) => {
 
+    const inventoryPage = new InventoryPage(page);
+
     //Verifying Page status
     await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
 
     //Wait for page to fully load and verify response
     await page.waitForLoadState();
-
+    
     //Add items to cart
-    await page.click('[data-test="add-to-cart-sauce-labs-backpack"]');
-    await page.click('[data-test="add-to-cart-sauce-labs-bike-light"]');
+    await inventoryPage.addItemToCart('sauce-labs-backpack');
+    await inventoryPage.addItemToCart('sauce-labs-bike-light');
 
     //Verify cart badge is updated
     await expect (page.locator('[data-test="shopping-cart-badge"]')).toHaveText('2');
 
     //Go to cart
-    await page.click('#shopping_cart_container');
+    await inventoryPage.goToCart();
 
     //Go to Checkout
     await page.click('[data-test="checkout"]');

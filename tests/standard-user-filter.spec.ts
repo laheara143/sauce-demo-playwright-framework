@@ -1,5 +1,6 @@
 import {test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/loginPage';
+import { InventoryPage } from '../pages/inventoryPage';
 
 test.describe('Standard User can sort products using the filter', () => {
 
@@ -11,13 +12,14 @@ test.beforeEach(async ({page}) => {
 });
 
 test('Navigate to page, Log In, Adjust Filter', async ({page}) => {
+ 
+    const inventoryPage = new InventoryPage(page);
 
     //Wait for page to fully load
     await page.waitForLoadState();
 
     //Adjust filter
-    const store_cart_dropdown = page.locator('[data-test="product-sort-container"]');
-    store_cart_dropdown.selectOption("Price (low to high)");
+    await inventoryPage.applyFilter('lohi');
 
     //Verify store filter was changed to Low to High
     await page.screenshot({ path: 'screenshots/store-filter.png' });

@@ -4,11 +4,11 @@ export class InventoryPage {
     constructor(private page: Page) {}
 
     async addItemToCart(item: string) {
-        await this.page.locator('[data-test="add-to-cart-${item}"]').click();
+        await this.page.locator(`[data-test="add-to-cart-${item}"]`).click();
     }
 
     async removeItem(item: string) {
-        await this.page.locator('[data-test="remove-${item}"]').click();
+        await this.page.locator(`[data-test="remove-${item}"]`).click();
     }  
 
     async goToCart() {
@@ -16,7 +16,7 @@ export class InventoryPage {
     }    
 
     async applyFilter(value: string) {
-        await this.page.selectOption('.product-sort-container', value);
+        await this.page.selectOption('.product_sort_container', value);
     }    
 
 }

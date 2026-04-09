@@ -1,5 +1,7 @@
 import {test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/loginPage';
+import { InventoryPage } from '../pages/inventoryPage';
+
 
 test.describe('Standard User can remove added items and the cart badge will reflect that', () => {
 
@@ -11,23 +13,25 @@ test.beforeEach(async ({page}) => {
 });
 
 test('Navigate to page, Log In, Add Items, Remove Items and verify Cart Badge', async ({page}) => {
+   
+    const inventoryPage = new InventoryPage(page);
 
     //Wait for page to fully load
     await page.waitForLoadState();
 
     //Add items to cart
-    await page.click('[data-test="add-to-cart-sauce-labs-backpack"]');
-    await page.click('[data-test="add-to-cart-sauce-labs-bike-light"]');
+    await inventoryPage.addItemToCart('sauce-labs-backpack');
+    await inventoryPage.addItemToCart('sauce-labs-bike-light');
 
     //Verify cart badge is updated
     await expect (page.locator('[data-test="shopping-cart-badge"]')).toHaveText('2');
 
     //Go to cart
-    await page.click('#shopping_cart_container');
+    await inventoryPage.goToCart();
 
     //Remove all items
-    await page.click('[data-test="remove-sauce-labs-backpack"]');
-    await page.click('[data-test="remove-sauce-labs-bike-light"]');
+    await inventoryPage.removeItem('sauce-labs-backpack');
+    await inventoryPage.removeItem('sauce-labs-bike-light');
 
     //Verify cart badge is updated
     await expect(page.getByTestId('[data-test="shopping-cart-badge"]')).toBeHidden();
