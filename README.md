@@ -15,7 +15,14 @@ This project is an e2e test automation framework that was built using Playwright
 - Typescript
 - Node.Js
 
-## How To Run Tests
+## How to Run Tests
+
+Tests can be run **either locally** from the terminal **or** **manually via GitHub Actions**.
+
+### Option 1: Run Tests Locally (Terminal / Codespace)
+
+From the project root directory, run:
+
 ```bash
 npx playwright test
 
